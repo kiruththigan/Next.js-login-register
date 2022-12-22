@@ -44,14 +44,14 @@ export default function Home() {
         }
         setTimeout(() => {
           setErrors('')
-        }, 7000);
+        }, 5000);
       }
     }).catch(error => {
       console.log(error)
       setErrors(error)
       setTimeout(() => {
         setErrors('')
-      }, 7000);
+      }, 5000);
     })
   }
 
