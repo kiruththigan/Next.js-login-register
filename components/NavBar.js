@@ -7,7 +7,6 @@ export default function NavBar() {
     const handlerSignout = (e) => {
         e.preventDefault()
         signOut()
-        router.push('/')
     }
     return (
         <header className="p-2">

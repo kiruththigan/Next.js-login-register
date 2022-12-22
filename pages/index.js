@@ -13,13 +13,14 @@ export default function Home() {
   const router = useRouter()
   const dispatch = useDispatch()
   const auth = useSelector(state => state.auth)
+  const [errors, setErrors] = useState('')
 
   const [authState, setAuthState] = useState({
     email: '',
     password: ''
   })
 
-  const [isLoading,setIsLoading]=useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   const fieldOnchangeHandler = (e) => {
     setAuthState(old => ({ ...old, [e.target.id]: e.target.value }))
@@ -32,12 +33,25 @@ export default function Home() {
       ...authState,
       redirect: false
     }).then(response => {
-      console.log(response)
-      if (response.error===null) {
+      // console.log(response)
+      if (!response.error) {
         router.push("/dashboard")
+      } else {
+        if (response.error == "CredentialsSignin") {
+          setErrors("username or password wrong!")
+        } else {
+          setErrors(response.error)
+        }
+        setTimeout(() => {
+          setErrors('')
+        }, 7000);
       }
     }).catch(error => {
       console.log(error)
+      setErrors(error)
+      setTimeout(() => {
+        setErrors('')
+      }, 7000);
     })
   }
 
@@ -80,11 +94,14 @@ export default function Home() {
           </div>
           <div className="mb-4 ">
             {/* <button className="primary-button rounded-2xl bg-blue-500 text-white px-5 py-1" disabled={auth.loading}>{auth.loading?'Loading':'Login'}</button> */}
-            <button className="primary-button rounded-2xl bg-blue-500 text-white px-5 py-1" disabled={isLoading}>{isLoading?'Loading...':'Login'}</button>
+            <button className="primary-button rounded-2xl bg-blue-500 text-white px-5 py-1" disabled={isLoading}>{isLoading ? 'Loading...' : 'Login'}</button>
           </div>
           <div className="mb-4 ">
             Don&apos;t have an account? &nbsp;
             <Link href={`/register`} className="text-blue-400">Signup</Link>
+          </div>
+          <div className='p-2 text-red-500'>
+            <span>{errors}</span>
           </div>
         </form>
       </main>

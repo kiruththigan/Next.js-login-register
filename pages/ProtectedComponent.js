@@ -10,7 +10,7 @@ export default function ProtectedComponent({ children }) {
     if (!data) {
       route.push('/')
     }
-  },[])
+  },[],10000000)
   return (
     <div>
       {children}

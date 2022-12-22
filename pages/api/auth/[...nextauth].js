@@ -19,6 +19,11 @@ export const authOptions = {
     providers: [
         CredentialsProvider({
             name: "Credentials",
+            callbacks: {
+                async redirect() {
+                    return '/'
+                }
+            },
             async authorize(credentials, req) {
 
                 const res = await fetch('https://ujkp2xeahs.us-east-1.awsapprunner.com/api/v1/authenticate/login', {
