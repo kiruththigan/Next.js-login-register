@@ -20,7 +20,7 @@ export default function Home() {
     password: ''
   })
 
-  const [isLoading, setIsLoading] = useState(false)
+  // const [isLoading, setIsLoading] = useState(false)
 
   const fieldOnchangeHandler = (e) => {
     setAuthState(old => ({ ...old, [e.target.id]: e.target.value }))
@@ -28,32 +28,16 @@ export default function Home() {
 
   const submitHandler = async (e) => {
     e.preventDefault()
-    // dispatch(authentication(authState))
-    signIn('credentials', {
-      ...authState,
-      redirect: false
-    }).then(response => {
-      // console.log(response)
-      if (!response.error) {
-        router.push("/dashboard")
-      } else {
-        if (response.error == "CredentialsSignin") {
-          setErrors("username or password wrong!")
-        } else {
-          setErrors(response.error)
-        }
-        setTimeout(() => {
-          setErrors('')
-        }, 5000);
-      }
-    }).catch(error => {
-      console.log(error)
-      setErrors(error)
-      setTimeout(() => {
-        setErrors('')
-      }, 5000);
-    })
+    dispatch(authentication(authState))
   }
+
+  useEffect(() => {
+    if (auth.isSuccess) {
+      console.log("test")
+      router.push('/dashboard')
+      // router.push('/dashboard')
+    }
+  }, [auth.payload])
 
   return (
     <>
@@ -93,8 +77,8 @@ export default function Home() {
             />
           </div>
           <div className="mb-4 ">
-            {/* <button className="primary-button rounded-2xl bg-blue-500 text-white px-5 py-1" disabled={auth.loading}>{auth.loading?'Loading':'Login'}</button> */}
-            <button className="primary-button rounded-2xl bg-blue-500 text-white px-5 py-1" disabled={isLoading}>{isLoading ? 'Loading...' : 'Login'}</button>
+            <button className="primary-button rounded-2xl bg-blue-500 text-white px-5 py-1" disabled={auth.loading}>{auth.loading ? 'Loading' : 'Login'}</button>
+            {/* <button className="primary-button rounded-2xl bg-blue-500 text-white px-5 py-1" disabled={isLoading}>{isLoading ? 'Loading...' : 'Login'}</button> */}
           </div>
           <div className="mb-4 ">
             Don&apos;t have an account? &nbsp;

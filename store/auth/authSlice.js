@@ -15,24 +15,8 @@ export const authentication = createAsyncThunk('auth/authenticate', async (login
             headers: { "Content-Type": "application/json" }
         })
         const user = await res.json()
+        localStorage.setItem('accessToken',user.payload)
         return user
-
-
-        // await axios.post(
-        //     'https://ujkp2xeahs.us-east-1.awsapprunner.com/api/v1/authenticate/login',
-        //     loginData,
-        //     {
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //         }
-        //     }
-        // ).then((res) => {
-        //     data = res.data
-        // }).catch((error) => {
-        //     data = error
-        // })
-
-        // return data
     } catch (error) {
         console.log(error.message);
     }
