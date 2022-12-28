@@ -2,17 +2,18 @@ import React, { useEffect } from 'react'
 import Footer from '../components/Footer'
 import NavBar from '../components/NavBar'
 import withAuth from '../HOC/withAuth'
+import ProtectedComponent from './ProtectedComponent'
 function Dashboard() {
 
     return (
-        <div>
-            <NavBar />
+        <ProtectedComponent>
+             <NavBar />
             <div className='min-h-screen bg-gray-300 text-center p-3'>
-                dashboard<br />
+                dashboard
             </div>
-            <Footer />
-        </div>
+             <Footer />
+        </ProtectedComponent>
     )
 }
 
-export default  withAuth(Dashboard)
+export default  Dashboard

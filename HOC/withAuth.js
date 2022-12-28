@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 const withAuth = (WrappedComponent) => {
   return (props) => {
     // checks whether we are on client / browser or server.
@@ -14,8 +15,7 @@ const withAuth = (WrappedComponent) => {
       }
 
       // If this is an accessToken we just render the component that was passed with all its props
-
-      return <div><WrappedComponent {...props} /></div>
+      return <WrappedComponent {...props} />
     }
 
     // If we are on server, return null

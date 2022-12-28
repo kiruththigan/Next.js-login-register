@@ -2,7 +2,6 @@ import Head from 'next/head'
 import { Inter } from '@next/font/google'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { signIn, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { authentication } from '../store/auth/authSlice'
 import { useDispatch, useSelector } from 'react-redux'
@@ -13,14 +12,12 @@ export default function Home() {
   const router = useRouter()
   const dispatch = useDispatch()
   const auth = useSelector(state => state.auth)
-  const [errors, setErrors] = useState('')
+  const [errors, setErrors] = useState()
 
   const [authState, setAuthState] = useState({
     email: '',
     password: ''
   })
-
-  // const [isLoading, setIsLoading] = useState(false)
 
   const fieldOnchangeHandler = (e) => {
     setAuthState(old => ({ ...old, [e.target.id]: e.target.value }))
@@ -30,14 +27,23 @@ export default function Home() {
     e.preventDefault()
     dispatch(authentication(authState))
   }
-
+  
   useEffect(() => {
-    if (auth.isSuccess) {
-      console.log("test")
+    const accessToken = localStorage.getItem('accessToken')
+    if (accessToken) {
       router.push('/dashboard')
-      // router.push('/dashboard')
     }
-  }, [auth.payload])
+    // if (auth.isSuccess) {
+    //   console.log("test")
+    //   router.push('/dashboard')
+    // }
+
+    if (auth.isFailed) {
+      setErrors(auth.message)
+    }
+
+  }, [auth.payload,auth.isFailed])
+
 
   return (
     <>
